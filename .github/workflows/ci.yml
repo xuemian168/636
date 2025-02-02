@@ -61,6 +61,10 @@ jobs:
         cd ./backend
         touch .env
         echo "${{ secrets.PROD }}" > .env
+        cd ../fronend
+        npm install
+        npm run build
+
     - run: pm2 restart all
 
 
