@@ -43,8 +43,7 @@ jobs:
 
     # Install dependencies for backend
     - name: Install Backend Dependencies
-      working-directory: ./backend
-      run: npm install
+      run: npm run install-all
 
     # Run backend tests
     - name: Run Backend Tests
@@ -61,9 +60,6 @@ jobs:
         cd ./backend
         touch .env
         echo "${{ secrets.PROD }}" > .env
-        cd ../fronend
-        npm install
-        npm run build
 
     - run: pm2 restart all
 
