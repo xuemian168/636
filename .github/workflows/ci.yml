@@ -43,7 +43,14 @@ jobs:
 
     # Install dependencies for backend
     - name: Install Backend Dependencies
-      run: npm run install-all
+      working-directory: ./backend
+      run: npm run install
+
+      # Install dependencies for backend
+    - name: Install Frontend Dependencies
+      working-directory: ./frontend
+      run: npm run install
+
 
     # Run backend tests
     - name: Run Backend Tests
