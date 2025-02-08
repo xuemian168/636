@@ -4,9 +4,7 @@ on:
   push:
     branches:
       - main  # Trigger CI on pushes to the main branch
-  pull_request:
-    branches:
-      - main  # Trigger CI on pull requests to the main branch
+
 
 jobs:
   test:
@@ -29,7 +27,7 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-    - run: pm2 stop 0
+
     - name: Print Env Secret
 
       env:
@@ -40,16 +38,25 @@ jobs:
         echo "Secret 1 is: $MONGO_URI"
         echo "Secret 2 is: $JWT_SECRET"
         echo "Secret 3 is: $PORT"
+      
+    - run: pm2 stop all
 
     # Install dependencies for backend
     - name: Install Backend Dependencies
       working-directory: ./backend
-      run: npm install
-
-      # Install dependencies for backend
-    # - name: Install Frontend Dependencies
-    #   working-directory: ./frontend
-    #   run: npm install
+      run: | 
+       npm install --global yarn
+       yarn --version
+       yarn install
+      
+    # Install dependencies for frontend
+    - name: Install Frontend Dependencies
+      working-directory: ./frontend
+      run: |
+        df -h
+        sudo rm -rf ./build
+        yarn install
+        yarn run build
 
 
     # Run backend tests
@@ -67,11 +74,7 @@ jobs:
         cd ./backend
         touch .env
         echo "${{ secrets.PROD }}" > .env
-    - run: pm2 start 0
+
+    - run: pm2 start all
+
     - run: pm2 restart all
-
-
-
-  
-
- 
