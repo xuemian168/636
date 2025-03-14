@@ -68,9 +68,9 @@ jobs:
       working-directory: ./backend
       run: npm test
 
-
-    - run: npm ci
-    - run: | 
+    # Remove the npm ci command and keep the env file creation
+    - name: Create env file
+      run: | 
         cd ./backend
         touch .env
         echo "${{ secrets.PROD }}" > .env
